@@ -8,7 +8,7 @@ decimal::decimal()
 decimal::decimal(string str)
 {
 	int i;
-	int realdot;
+	int realdot = -1;
 
 	for (i = 0; i < str.size(); i++)
 	{
@@ -19,19 +19,63 @@ decimal::decimal(string str)
 		}
 	}
 
-	this->m_Integer = stoll(str.substr(0, realdot));
-	this->m_Real = str.substr(realdot + 1, str.size() - realdot - 1);
+	if (realdot == -1)
+	{
+		this->m_Integer = stoll(str);
+		this->m_Real = "";
+	}
+	else
+	{
+		this->m_Integer = stoll(str.substr(0, realdot));
+		this->m_Real = str.substr(realdot + 1, str.size() - realdot - 1);
+	}
 }
 
-decimal::decimal(const decimal& de)
+decimal::decimal(const decimal& d)
 {
-	this->m_Integer = de.m_Integer;
-	this->m_Real = de.m_Real;
+	this->m_Integer = d.m_Integer;
+	this->m_Real = d.m_Real;
 }
 
 decimal::~decimal()
 {
 
+}
+
+inline byte decimal::toByte(char chr)
+{
+	switch (chr)
+	{
+	case '0':
+		return 0;
+
+	case '1':
+		return 1;
+
+	case '2':
+		return 2;
+
+	case '3':
+		return 3;
+
+	case '4':
+		return 4;
+
+	case '5':
+		return 5;
+
+	case '6':
+		return 6;
+
+	case '7':
+		return 7;
+
+	case '8':
+		return 8;
+
+	case '9':
+		return 9;
+	}
 }
 
 string decimal::toString()
@@ -51,7 +95,71 @@ long long decimal::toInt64()
 
 decimal decimal::operator+(decimal & de)
 {
-	decimal d(*this);
+	decimal d;
+
+	d.m_Integer = this->m_Integer + de.m_Integer;
+
+	string real = "";
+
+	int iup;
+
+	if (this->m_Real.size() >= de.m_Real.size())
+	{
+		real = realPlus(this->m_Real, de.m_Real, iup);
+	}
+	else
+	{
+		real = realPlus(de.m_Real, this->m_Real, iup);
+	}
+
+	d.m_Real = real;
+	d.m_Integer += iup;
 
 	return d;
+}
+
+inline string decimal::realPlus(string big, string small, int &iup)
+{
+	int plus_zero = big.size() - small.size();
+
+	int i;
+
+	for (i = 0; i < plus_zero; i++)
+	{
+		small += '0';
+	}
+
+	int size = this->m_Real.size();
+
+	byte up = 0;
+
+	string real;
+
+	for (i = size - 1; i >= 0; i--)
+	{
+		byte b;
+
+		b = toByte(big.at(i)) + toByte(small.at(i)) + up;
+
+		up = 0;
+
+		string str = to_string(b);
+
+		if (str.size() == 1)
+		{
+			real = real + str;
+		}
+		else
+		{
+			up = toByte(str.at(0));
+			real = real + str.substr(1);
+		}
+
+		if (i == 0)
+		{
+			iup = up;
+		}
+	}
+
+	return real;
 }
