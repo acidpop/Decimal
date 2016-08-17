@@ -20,6 +20,7 @@ public:
 	long long toInt64();
 
 	decimal operator+(decimal &de);
+	decimal operator-(decimal &de);
 
 private:
 	long long m_Integer;
@@ -30,6 +31,7 @@ private:
 
 private:
 	inline string realPlus(string big, string small, int &iup);
+	inline string realMinus(string a, string b, long long &integer);
 };
 
 #endif

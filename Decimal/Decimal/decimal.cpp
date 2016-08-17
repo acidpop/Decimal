@@ -129,7 +129,7 @@ inline string decimal::realPlus(string big, string small, int &iup)
 		small += '0';
 	}
 
-	int size = this->m_Real.size();
+	int size = big.size();
 
 	byte up = 0;
 
@@ -159,6 +159,53 @@ inline string decimal::realPlus(string big, string small, int &iup)
 		{
 			iup = up;
 		}
+	}
+
+	return real;
+}
+
+decimal decimal::operator-(decimal &de)
+{
+	decimal d;
+
+	d.m_Integer = this->m_Integer;
+
+	string real = "";
+
+	real = realMinus(d.m_Real, de.m_Real, de.m_Integer);
+
+	d.m_Integer = this->m_Integer - de.m_Integer;
+	d.m_Real = real;
+
+	return d;
+}
+
+inline string decimal::realMinus(string a, string b, long long &integer)
+{
+	int plus_zero = a.size() >= b.size() ? a.size() - b.size() : b.size() - a.size();
+	bool isBigA = a.size() >= b.size() ? true : false;
+
+	int i;
+
+	for (i = 0; i < plus_zero; i++)
+	{
+		if (isBigA)
+		{
+			b += '0';
+		}
+		else
+		{
+			a += '0';
+		}
+	}
+
+	int size = a.size();
+
+	string real;
+
+	for (i = size - 1; i >= 0; i--)
+	{
+
 	}
 
 	return real;
