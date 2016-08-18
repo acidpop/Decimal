@@ -20,3 +20,7 @@ static(kmc7468)이 부동 소수점 방식을 이용한 소수 처리 방식은 
 ## 호환성
 - [x] **long long**으로 변환 (정수 부분만)
 - [x] **double**으로 변환 (정수 부분 및 소수 부분(double에서 표현 가능한 범위))
+- [x] **std::string**으로 변환
+- [x] **std::string**으로 값 설정
+- [ ] **double**으로 값 설정
+- [ ] **long long**으로 값 설정
