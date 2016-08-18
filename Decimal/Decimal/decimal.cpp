@@ -101,7 +101,7 @@ decimal decimal::operator+(decimal & de)
 
 	string real = "";
 
-	int iup;
+	int iup = 0;
 
 	if (this->m_Real.size() >= de.m_Real.size())
 	{
@@ -143,21 +143,22 @@ inline string decimal::realPlus(string big, string small, int &iup)
 
 		up = 0;
 
-		string str = to_string(b);
+		if (b >= 10)
+		{
+			byte m = 9;
+			byte by = b - m;
+			up += by;
+		}
 
-		if (str.size() == 1)
-		{
-			real = real + str;
-		}
-		else
-		{
-			up = toByte(str.at(0));
-			real = real + str.substr(1);
-		}
+		string str = to_string(b);
+		real = str.size() == 1 ? str + real : str.substr(1) + real;
 
 		if (i == 0)
 		{
-			iup = up;
+			if (up != 0)
+			{
+				iup = up;
+			}
 		}
 	}
 
@@ -172,7 +173,7 @@ decimal decimal::operator-(decimal &de)
 
 	string real = "";
 
-	real = realMinus(d.m_Real, de.m_Real, de.m_Integer);
+	real = realMinus(d.m_Real, de.m_Real, d.m_Integer);
 
 	d.m_Integer = this->m_Integer - de.m_Integer;
 	d.m_Real = real;

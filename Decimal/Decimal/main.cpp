@@ -11,13 +11,13 @@ int main()
 
 	for (i = 0; i < 10000; i++)
 	{
-		f += 0.2;
+		f += 0.001;
 	}
 
 	cout << f << endl;
 
-	decimal d("0.0");
-	decimal d2("0.01");
+	decimal d("0");
+	decimal d2("0.001");
 
 	for (i = 0; i < 10000; i++)
 	{
