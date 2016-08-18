@@ -16,13 +16,10 @@ int main()
 
 	cout << f << endl;
 
-	decimal d("0");
-	decimal d2("2");
+	decimal d("2.0");
+	decimal d2("1.0001");
 
-	for (i = 0; i < 10000; i++)
-	{
-		d = d + d2;
-	}
+	d -= d2;
 
 	cout << d.toString() << endl;
 

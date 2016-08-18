@@ -22,12 +22,23 @@ public:
 	decimal operator+(decimal &de);
 	decimal operator-(decimal &de);
 
+	decimal operator+=(decimal &de);
+	decimal operator-=(decimal &de);
+
+	decimal operator++();
+	decimal operator++(int);
+	decimal operator--();
+	decimal operator--(int);
+
+	decimal operator=(decimal &de);
+
 private:
 	long long m_Integer;
 	string m_Real;
 
 private:
 	inline byte toByte(char chr);
+	inline byte getDown(string &real, int index, long long& integer, int order = 0);
 
 private:
 	inline string realPlus(string big, string small, int &iup);

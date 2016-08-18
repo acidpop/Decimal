@@ -78,6 +78,42 @@ inline byte decimal::toByte(char chr)
 	}
 }
 
+inline byte decimal::getDown(string &real, int index, long long& integer, int order)
+{
+	byte res = 0;
+
+	if (index == 0)
+	{
+		integer -= 1;
+		res = 10;
+
+		real[0] = '9';
+	}
+	else
+	{
+		if (real.at(index - 1) == '0')
+		{
+			real[index - 1] = '9';
+
+			res = getDown(real, index - 1, integer, order + 1);
+		}
+		else
+		{
+			byte b = toByte(real.at(index - 1));
+
+			b -= 1;
+
+			string str = to_string(b);
+
+			real[index - 1] = str.at(0);
+
+			res = 10;
+		}
+	}
+
+	return res;
+}
+
 string decimal::toString()
 {
 	if (this->m_Real != "")
@@ -173,15 +209,13 @@ inline string decimal::realPlus(string big, string small, int &iup)
 
 decimal decimal::operator-(decimal &de)
 {
-	decimal d;
-
-	d.m_Integer = this->m_Integer;
+	decimal d(*this);
 
 	string real = "";
 
 	real = realMinus(d.m_Real, de.m_Real, d.m_Integer);
 
-	d.m_Integer = this->m_Integer - de.m_Integer;
+	d.m_Integer -= de.m_Integer;
 	d.m_Real = real;
 
 	return d;
@@ -212,8 +246,76 @@ inline string decimal::realMinus(string a, string b, long long &integer)
 
 	for (i = size - 1; i >= 0; i--)
 	{
+		if (toByte(a.at(i)) < toByte(b.at(i)))
+		{
+			byte m = toByte(a.at(i));
 
+			m += getDown(a, i, integer);
+
+			m -= toByte(b.at(i));
+
+			real = to_string(m) + real;
+		}
+		else
+		{
+			byte bt = toByte(a.at(i)) - toByte(b.at(i));
+
+			real = to_string(bt) + real;
+		}
 	}
 
 	return real;
+}
+
+decimal decimal::operator+=(decimal &de)
+{
+	decimal d = *this + de;
+
+	this->m_Integer = d.m_Integer;
+	this->m_Real = d.m_Real;
+
+	return *this;
+}
+
+decimal decimal::operator-=(decimal &de)
+{
+	decimal d = *this - de;
+
+	this->m_Integer = d.m_Integer;
+	this->m_Real = d.m_Real;
+
+	return *this;
+}
+
+decimal decimal::operator++()
+{
+	this->m_Integer += 1;
+	return *this;
+}
+
+decimal decimal::operator++(int)
+{
+	decimal d(*this);
+	this->m_Integer += 1;
+	return d;
+}
+
+decimal decimal::operator--()
+{
+	this->m_Integer -= 1;
+	return *this;
+}
+
+decimal decimal::operator--(int)
+{
+	decimal d(*this);
+	this->m_Integer -= 1;
+	return d;
+}
+
+decimal decimal::operator=(decimal &de)
+{
+	this->m_Integer = de.m_Integer;
+	this->m_Real = de.m_Real;
+	return *this;
 }
