@@ -17,7 +17,7 @@ int main()
 	cout << f << endl;
 
 	decimal d("0");
-	decimal d2("0.001");
+	decimal d2("2");
 
 	for (i = 0; i < 10000; i++)
 	{

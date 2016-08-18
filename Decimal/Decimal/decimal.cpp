@@ -80,7 +80,10 @@ inline byte decimal::toByte(char chr)
 
 string decimal::toString()
 {
-	return to_string(this->m_Integer) + "." + this->m_Real;
+	if (this->m_Real != "")
+		return to_string(this->m_Integer) + "." + this->m_Real;
+	else
+		return to_string(this->m_Integer);
 }
 
 double decimal::toReal64()
@@ -99,21 +102,24 @@ decimal decimal::operator+(decimal & de)
 
 	d.m_Integer = this->m_Integer + de.m_Integer;
 
-	string real = "";
-
-	int iup = 0;
-
-	if (this->m_Real.size() >= de.m_Real.size())
+	if (this->m_Real != "" || de.m_Real != "")
 	{
-		real = realPlus(this->m_Real, de.m_Real, iup);
-	}
-	else
-	{
-		real = realPlus(de.m_Real, this->m_Real, iup);
-	}
+		string real = "";
 
-	d.m_Real = real;
-	d.m_Integer += iup;
+		int iup = 0;
+
+		if (this->m_Real.size() >= de.m_Real.size())
+		{
+			real = realPlus(this->m_Real, de.m_Real, iup);
+		}
+		else
+		{
+			real = realPlus(de.m_Real, this->m_Real, iup);
+		}
+
+		d.m_Real = real;
+		d.m_Integer += iup;
+	}
 
 	return d;
 }
